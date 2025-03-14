@@ -1,41 +1,52 @@
----
 name: Infrastructure Deployment Pipeline
-
 
 on:
   push:
     branches:
       - master
 
-
 jobs:
   terraform:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: setup terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: terraform init
-        run: terraform init
+      - name: Terraform init
+        run: cd Terraform && terraform init
 
-      - name: terraform apply
-        run: terraform apply -auto-approve
+      - name: Terraform apply
+        run: cd Terraform && terraform apply -auto-approve
 
-      - name: save inventory
-        run: cat Ansible/inventory.ini
+      - name: Save inventory
+        run: cat Terraform/inventory.ini > inventory.ini
 
+      - name: Upload inventory file
+        uses: actions/upload-artifact@v4
+        with:
+          name: inventory
+          path: inventory.ini
 
-    Ansible:
-      runs-on: ubuntu-latest
-      steps:
-        - name: checkout repository
-          uses: actions/checkout@v4
+  ansible:
+    runs-on: ubuntu-latest
+    needs: terraform
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-        - name: setup ansible
-          run: sudo apt update && sudo apt install -y ansible
+      - name: Download inventory file
+        uses: actions/download-artifact@v4
+        with:
+          name: inventory
 
-        - name: run ansible playbook
-          run: ansible-playbook -i inventory.ini Ansible/playbook.yml
+      - name: Move inventory file
+        run: mv inventory.ini Ansible/inventory.ini
+
+      - name: Setup Ansible
+        run: sudo apt update && sudo apt install -y ansible
+
+      - name: Run Ansible playbook
+        run: cd Ansible && ansible-playbook -i inventory.ini playbook.yml
