@@ -1,0 +1,41 @@
+---
+- name: Infrastructure Deployment Pipeline
+
+
+  on:
+    push:
+      branches:
+        - master
+
+
+  jobs:
+    terraform:
+      runs-on: ubuntu-latest
+      steps:
+        - name: checkout repository
+          uses: actions/checkout@v4
+
+        - name: setup terraform
+          uses: hashicorp/setup-terraform@v3
+
+        - name: terraform init
+          run: terraform init
+
+        - name: terraform apply
+          run: terraform apply -auto-approve
+
+        - name: save inventory
+          run: cat Ansible/inventory.ini
+
+
+      Ansible:
+        runs-on: ubuntu-latest
+        steps:
+          - name: checkout repository
+            uses: actions/checkout@v4
+
+          - name: setup ansible
+            run: sudo apt update && sudo apt install -y ansible
+
+          - name: run ansible playbook
+            run: ansible-playbook -i inventory.ini Ansible/playbook.yml
