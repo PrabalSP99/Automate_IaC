@@ -51,6 +51,6 @@ resource "aws_instance" "my_instance" {
 }
 
 resource "local_file" "inventory" {
-  content  = templatefile("${path.module}/../ansible/inventory.tpl", { public_ip = aws_instance.my_instance[0].public_ip })
-  filename = "${path.module}/../ansible/inventory.ini"
+  content  = templatefile("${path.module}/../Ansible/inventory.tpl", { public_ip = aws_instance.my_instance[0].public_ip })
+  filename = "${path.module}/../Ansible/inventory.ini"
 }
