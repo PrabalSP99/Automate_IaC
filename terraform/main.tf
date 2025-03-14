@@ -2,8 +2,6 @@ provider "aws" {
     region = "ap-south-1"
 }
 
-
-
 resource "aws_security_group" "my_instance_sg"{
     name = "my_security_group"
     description = "Allow SSH and HTTP inbound traffic"
