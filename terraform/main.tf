@@ -41,7 +41,7 @@ resource "aws_instance" "my_instance" {
     instance_type = "t2.micro"
     count = 1   # create 1 instance,if not mention it wil create only one
     key_name = "developer"
-    security_groups = [aws_security_group.my_instance_sg.name]
+    # security_groups = [aws_security_group.my_instance_sg.name]
 
     tags ={
         Name= "My-instance"
