@@ -55,4 +55,7 @@ jobs:
         run: sudo apt update && sudo apt install -y ansible
 
       - name: Run Ansible playbook
-        run: cd Ansible && ansible-playbook -i inventory.ini playbook.yml
+        run: |
+          cd terraform
+          cd ansible
+          ansible-playbook -i inventory.ini playbook.yml
