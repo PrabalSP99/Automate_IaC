@@ -17,9 +17,17 @@ jobs:
 
       - name: Terraform init
         run: cd terraform && terraform init
+      
+      - name: Configuration AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with: 
+          aws-access-key-id: ${{ secrets.GIT_REPO_ACCESS_KEY }} 
+          aws-secret-access-key: ${{ secrets.GIT_REPO_SECRET_KEY }}
+          aws-region: ap-south-1
 
       - name: Terraform apply
-        run: cd terraform && terraform apply -auto-approve
+        run: cd Terraform && terraform apply -auto-approve
+
 
       - name: Save inventory
         run: cat Terraform/inventory.ini > inventory.ini
