@@ -51,7 +51,7 @@ jobs:
           name: inventory
 
       - name: Move inventory file
-        run: mv inventory.ini Ansible/inventory.ini
+        run: mv inventory.ini terraform/ansible/inventory.ini
 
       - name: Setup Ansible
         run: sudo apt update && sudo apt install -y ansible
