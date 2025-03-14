@@ -16,10 +16,10 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform init
-        run: cd Terraform && terraform init
+        run: cd terraform && terraform init
 
       - name: Terraform apply
-        run: cd Terraform && terraform apply -auto-approve
+        run: cd terraform && terraform apply -auto-approve
 
       - name: Save inventory
         run: cat Terraform/inventory.ini > inventory.ini
