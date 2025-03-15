@@ -41,7 +41,7 @@ resource "aws_instance" "my_instance" {
     instance_type = "t2.micro"
     count = 1   # create 1 instance,if not mention it wil create only one
     key_name = "developer"
-    # security_groups = [aws_security_group.my_instance_sg.name]
+    security_groups = [aws_security_group.my_instance_sg.name]
 
     tags ={
         Name= "My-instance"
@@ -49,6 +49,9 @@ resource "aws_instance" "my_instance" {
 }
 
 resource "local_file" "inventory" {
-  content  = templatefile("${path.module}/ansible/inventory.tpl", { public_ip = aws_instance.my_instance[0].public_ip })
-  filename = "${path.module}/ansible/inventory.ini"
+    content  = <<EOT
+[aws_instance]
+${aws_instance.my_instance[0].public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=/Users/prabal/Downloads/developer.pem
+EOT  
+    filename = "${path.module}/ansible/inventory.ini"
 }
