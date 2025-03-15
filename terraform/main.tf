@@ -51,7 +51,7 @@ resource "aws_instance" "my_instance" {
 resource "local_file" "inventory" {
     content  = <<EOT
 [aws_instance]
-${aws_instance.my_instance[0].public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=/Users/prabal/Downloads/developer.pem
+${aws_instance.my_instance[0].public_ip} ansible_user=ubuntu ansible_ssh_private_key_file=/Users/prabal/Downloads/developer.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 EOT  
     filename = "${path.module}/ansible/inventory.ini"
 }
