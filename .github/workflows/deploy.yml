@@ -57,6 +57,7 @@ jobs:
       # Write the SSH key from the secret to a file
       - name: Setup SSH key
         run: |
+          cd terraform/ansible
           echo "${{ secrets.AWS_SSH_KEY }}" > developer.pem
           chmod 600 developer.pem
 
