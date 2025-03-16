@@ -3,13 +3,28 @@
   hosts: all
   become: true
   tasks:
-    - name: Install nginx
+    - name: Install docker
       apt:
-        name: nginx
+        name: docker.io
         state: latest
+        update_cache: true
 
-    - name: Start nginx
+    - name: Start docker service
       service:
-        name: nginx
+        name: docker
         state: started
         enabled: true
+
+    - name: Pull Nginx Image
+      docker_image:
+        name: nginx
+        source: pull
+
+
+    - name: Run Nginx Container
+      docker_container:
+        name: nginx_web
+        image: nginx
+        ports:
+          - "80:80"
+        state: started
