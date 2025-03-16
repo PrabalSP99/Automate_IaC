@@ -37,34 +37,34 @@ jobs:
           path: inventory.ini
 
   ansible:
-  runs-on: ubuntu-latest
-  needs: terraform
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+    runs-on: ubuntu-latest
+    needs: terraform
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Download inventory file
-      uses: actions/download-artifact@v4
-      with:
-        name: inventory
+      - name: Download inventory file
+        uses: actions/download-artifact@v4
+        with:
+          name: inventory
 
-    - name: Move inventory file
-      run: mv inventory.ini terraform/ansible/inventory.ini
+      - name: Move inventory file
+        run: mv inventory.ini terraform/ansible/inventory.ini
 
-    - name: Setup Ansible
-      run: sudo apt update && sudo apt install -y ansible
+      - name: Setup Ansible
+        run: sudo apt update && sudo apt install -y ansible
 
-    # Write the SSH key from the secret to a file
-    - name: Setup SSH key
-      run: |
-        echo "${{ secrets.AWS_SSH_KEY }}" > developer.pem
-        chmod 600 developer.pem
+      # Write the SSH key from the secret to a file
+      - name: Setup SSH key
+        run: |
+          echo "${{ secrets.AWS_SSH_KEY }}" > developer.pem
+          chmod 600 developer.pem
 
-    # Update the inventory file to use the relative key path
-    - name: Update inventory file
-      run: sed -i 's|/Users/prabal/Downloads/developer.pem|./developer.pem|g' terraform/ansible/inventory.ini
+      # Update the inventory file to use the relative key path
+      - name: Update inventory file
+        run: sed -i 's|/Users/prabal/Downloads/developer.pem|./developer.pem|g' terraform/ansible/inventory.ini
 
-    - name: Run Ansible playbook
-      run: |
-        cd terraform/ansible
-        ansible-playbook -i inventory.ini playbook.yml
+      - name: Run Ansible playbook
+        run: |
+          cd terraform/ansible
+          ansible-playbook -i inventory.ini playbook.yml
