@@ -1,15 +1,25 @@
-variable "Ports" {
-  type = list(number)
+variable "instance_config" {
+  type = object({
+    image_id      = string
+    instance_type = string
+    key_address   = string
+    ports         = list(number)
+  })
 }
+  
 
-variable "image_id" {
-  type = string
-}
+# variable "Ports" {
+#   type = list(number)
+# }
 
-variable "instance_type" {
-  type = string
-}
+# variable "image_id" {
+#   type = string
+# }
 
-variable "key_address" {
-  type = string
-}
+# variable "instance_type" {
+#   type = string
+# }
+
+# variable "key_address" {
+#   type = string
+# }

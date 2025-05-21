@@ -4,7 +4,7 @@ resource "aws_security_group" "my_instance_sg" {
 
 
   dynamic "ingress" {
-    for_each = var.Ports
+    for_each = var.instance_config.Ports
     iterator = port
     content {
       from_port   = port.value
