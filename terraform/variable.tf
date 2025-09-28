@@ -3,7 +3,7 @@ variable "instance_config" {
     image_id      = string
     instance_type = string
     key_address   = string
-    ports         = list(number)
+    Ports         = list(number)
   })
 }
   
